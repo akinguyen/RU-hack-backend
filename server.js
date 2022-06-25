@@ -62,7 +62,7 @@ app.post("/sound", async (req, res) => {
 
       // if finalWord not inside database, find the closet one
       if (!wordDatabase.includes(finalWord)) {
-        finalWord = stringSimilarity.findBestMatch("comes", wordDatabase)
+        finalWord = stringSimilarity.findBestMatch(finalWord, wordDatabase)
           .bestMatch.target;
       }
 
