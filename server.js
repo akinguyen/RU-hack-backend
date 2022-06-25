@@ -80,7 +80,11 @@ app.post("/sound", async (req, res) => {
     });
   });
 
-  await exec("ffmpeg -f concat -safe 0  -i log.txt -c copy -y -ac 1 out.wav");
+  try {
+    await exec("ffmpeg -f concat -safe 0  -i log.txt -c copy -y -ac 1 out.wav");
+  } catch (error) {
+    console.log(error);
+  }
 
   return res.status(200).send({ result: "Ready to download" });
 });
