@@ -1,0 +1,3 @@
+file ./ed-sheeran/she/she.wav
+file ./ed-sheeran/kiss/kiss.wav
+file ./ed-sheeran/me/me-3.wav
