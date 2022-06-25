@@ -15,6 +15,8 @@ const getDirectories = (source) =>
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 
+const wordDatabase = getDirectories("./ed-sheeran/");
+
 //MiddleWare
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"),
@@ -48,11 +50,25 @@ app.post("/sound", async (req, res) => {
 
   words.forEach((word) => {
     const newWord = word.toLowerCase().trim();
-    const checkComma = newWord.split(",");
+    let checkComma = newWord.split(",");
+
+    if (checkComma[0] === "" && checkComma[1] === "") {
+      checkComma.pop();
+    }
 
     checkComma.forEach(async (word) => {
-      const finalWord = word === "" ? "delay_time" : word;
-      console.log(finalWord);
+      let finalWord = word === "" ? "delay_time" : word;
+
+      // if finalWord not inside database, find the closet one
+      if (!wordDatabase.includes(finalWord)) {
+        wordDatabase.forEach((dataWord) => {
+          if (dataWord.contains(finalWord)) {
+            finalWord = dataWord;
+            return;
+          }
+        });
+      }
+
       try {
         const files = await fs.promises.readdir(`./ed-sheeran/${finalWord}`);
         const wordVariant = _.sample(files);
@@ -60,6 +76,8 @@ app.post("/sound", async (req, res) => {
       } catch (error) {
         console.log(error);
       }
+
+      console.log("DEBUG:", finalWord);
     });
   });
 
