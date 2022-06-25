@@ -18,11 +18,6 @@ const getDirectories = (source) =>
 
 const wordDatabase = getDirectories("./ed-sheeran/"); // get dbs
 
-const finalWord = stringSimilarity.findBestMatch("i", wordDatabase).bestMatch
-  .target;
-
-console.log(finalWord);
-
 //MiddleWare
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"),
