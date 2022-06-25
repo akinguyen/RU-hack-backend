@@ -16,7 +16,7 @@ const getDirectories = (source) =>
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 
-const wordDatabase = getDirectories("./ed-sheeran/");
+const wordDatabase = getDirectories("./ed-sheeran/"); // get dbs
 
 //MiddleWare
 app.use((req, res, next) => {
