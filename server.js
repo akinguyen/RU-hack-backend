@@ -4,7 +4,6 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const bodyParse = require("body-parser");
-const users = require("./routers/users");
 const util = require("util"); // import util
 const exec = util.promisify(require("child_process").exec); // exec
 const fs = require("fs");
@@ -35,8 +34,6 @@ app.use(cors());
 app.use(bodyParse.urlencoded({ extended: true }));
 app.use(bodyParse.json());
 app.use(morgan("dev"));
-
-app.use("/users", users);
 
 // HELLO
 app.get("/", (req, res) => {
@@ -81,7 +78,7 @@ app.post("/share_friend", (req, res) => {
   const message = {
     to: email, //insert email from form over here
     from: "climapmessage@gmail.com",
-    subject: "Ed Sheeran sings for you!!",
+    subject: "Ed Sheeran sings for you! 🎵",
     text:
       "Hello, your friend shared you an Ed Sheeran Song: \n" +
       "https://ru-hack-backend.herokuapp.com/music", //insert
