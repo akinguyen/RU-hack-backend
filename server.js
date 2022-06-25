@@ -67,33 +67,17 @@ app.post("/sound", async (req, res) => {
   });
 
   await exec("ffmpeg -f concat -safe 0  -i log.txt -c copy -y -ac 1 out.wav");
+
+  return res.status(200).send({ result: "Ready to download" });
 });
 
-(async () => {
-  const userInput = "she kiss me, I love you";
+app.get("/music/", (req, res) => {
+  res.sendFile(__dirname + "/out.wav");
+});
 
-  const words = userInput.split(" ");
-  const logger = fs.createWriteStream("log.txt");
-
-  words.forEach((word) => {
-    const newWord = word.toLowerCase().trim();
-    const checkComma = newWord.split(",");
-
-    checkComma.forEach(async (word) => {
-      const finalWord = word === "" ? "delay_time" : word;
-      console.log(finalWord);
-      try {
-        const files = await fs.promises.readdir(`./ed-sheeran/${finalWord}`);
-        const wordVariant = _.sample(files);
-        logger.write(`file ./ed-sheeran/${finalWord}/${wordVariant}\n`);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  });
-
-  await exec("ffmpeg -f concat -safe 0  -i log.txt -c copy -y -ac 1 out.wav");
-})();
+app.get("/download", (req, res) => {
+  res.download(__dirname + "/out.wav");
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log("Running Server at " + port));
