@@ -58,13 +58,10 @@ app.post("/sound", async (req, res) => {
     }
 
     checkComma.forEach(async (word) => {
-      let finalWord = word === "" ? "delay_time" : word;
-
-      // if finalWord not inside database, find the closet one
-      if (!wordDatabase.includes(finalWord)) {
-        finalWord = stringSimilarity.findBestMatch(finalWord, wordDatabase)
-          .bestMatch.target;
-      }
+      const finalWord = stringSimilarity.findBestMatch(
+        word === "" ? "delay_time" : word,
+        wordDatabase
+      ).bestMatch.target;
 
       try {
         const files = await fs.promises.readdir(`./ed-sheeran/${finalWord}`);
