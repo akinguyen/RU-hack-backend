@@ -71,6 +71,31 @@ app.post("/sound", async (req, res) => {
   return res.status(200).send({ result: "Ready to download" });
 });
 
+app.post("/share_friend", (req, res) => {
+  const { email } = req.body;
+  const API_KEY = process.env.SEND_GRID_API;
+
+  const sg = require("@sendgrid/mail");
+  sg.setApiKey(API_KEY);
+
+  const message = {
+    to: email, //insert email from form over here
+    from: "climapmessage@gmail.com",
+    subject: "Ed Sheeran sings for you!!",
+    text:
+      "Hello, your friend shared you an Ed Sheeran Song: \n" +
+      "https://ru-hack-backend.herokuapp.com/music", //insert
+  };
+
+  sg.send(message)
+    .then(() => {
+      res.status(200).send({ msg: "Sent message" });
+    })
+    .catch((error) => {
+      res.status(404).send({ error: error.response.body });
+    });
+});
+
 app.get("/music/", (req, res) => {
   res.sendFile(__dirname + "/out.wav");
 });
