@@ -62,7 +62,7 @@ app.post("/sound", async (req, res) => {
       // if finalWord not inside database, find the closet one
       if (!wordDatabase.includes(finalWord)) {
         wordDatabase.forEach((dataWord) => {
-          if (dataWord.contains(finalWord)) {
+          if (dataWord.includes(finalWord)) {
             finalWord = dataWord;
             return;
           }
