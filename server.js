@@ -8,6 +8,7 @@ const util = require("util"); // import util
 const exec = util.promisify(require("child_process").exec); // exec
 const fs = require("fs");
 const _ = require("lodash");
+const stringSimilarity = require("string-similarity");
 
 const getDirectories = (source) =>
   fs
@@ -61,12 +62,8 @@ app.post("/sound", async (req, res) => {
 
       // if finalWord not inside database, find the closet one
       if (!wordDatabase.includes(finalWord)) {
-        wordDatabase.forEach((dataWord) => {
-          if (dataWord.includes(finalWord)) {
-            finalWord = dataWord;
-            return;
-          }
-        });
+        finalWord = stringSimilarity.findBestMatch("comes", wordDatabase)
+          .bestMatch.target;
       }
 
       try {
