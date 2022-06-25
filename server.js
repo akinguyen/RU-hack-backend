@@ -18,6 +18,11 @@ const getDirectories = (source) =>
 
 const wordDatabase = getDirectories("./ed-sheeran/"); // get dbs
 
+const finalWord = stringSimilarity.findBestMatch("i", wordDatabase).bestMatch
+  .target;
+
+console.log(finalWord);
+
 //MiddleWare
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"),
@@ -71,7 +76,12 @@ app.post("/sound", async (req, res) => {
         console.log(error);
       }
 
-      console.log("DEBUG:", finalWord);
+      console.log(
+        "DEBUG:",
+        finalWord,
+        "- ORIG:",
+        word === "" ? "delay_time" : word
+      );
     });
   });
 
