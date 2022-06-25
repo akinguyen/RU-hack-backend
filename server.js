@@ -43,25 +43,57 @@ app.get("/", (req, res) => {
   res.status(200).send({ msg: "Hello" });
 });
 
-const userInput = "she kiss me ha";
+app.post("/sound", async (req, res) => {
+  const { userInput } = req.body;
 
-const words = userInput.split(" ");
-console.log(words);
+  const words = userInput.split(" ");
+  const logger = fs.createWriteStream("log.txt");
 
-const logger = fs.createWriteStream("log.txt");
+  words.forEach((word) => {
+    const newWord = word.toLowerCase().trim();
+    const checkComma = newWord.split(",");
 
-words.forEach(async (word) => {
-  let newWord = word.toLowerCase().trim();
-  try {
-    const files = await fs.promises.readdir(`./ed-sheeran/${newWord}`);
-    const wordVariant = _.sample(files);
-    logger.write(`file ./ed-sheeran/${newWord}/${wordVariant}\n`); // again
-  } catch (error) {
-    console.log(error);
-  }
+    checkComma.forEach(async (word) => {
+      const finalWord = word === "" ? "delay_time" : word;
+      console.log(finalWord);
+      try {
+        const files = await fs.promises.readdir(`./ed-sheeran/${finalWord}`);
+        const wordVariant = _.sample(files);
+        logger.write(`file ./ed-sheeran/${finalWord}/${wordVariant}\n`); // again
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  });
+
+  await exec("ffmpeg -f concat -safe 0  -i log.txt -c copy -y -ac 1 out.wav");
 });
 
-exec("ffmpeg -f concat  -safe 0  -i log.txt -c copy -y -ac 1 out2.wav");
+(async () => {
+  const userInput = "she kiss me, I love you";
+
+  const words = userInput.split(" ");
+  const logger = fs.createWriteStream("log.txt");
+
+  words.forEach((word) => {
+    const newWord = word.toLowerCase().trim();
+    const checkComma = newWord.split(",");
+
+    checkComma.forEach(async (word) => {
+      const finalWord = word === "" ? "delay_time" : word;
+      console.log(finalWord);
+      try {
+        const files = await fs.promises.readdir(`./ed-sheeran/${finalWord}`);
+        const wordVariant = _.sample(files);
+        logger.write(`file ./ed-sheeran/${finalWord}/${wordVariant}\n`);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  });
+
+  await exec("ffmpeg -f concat -safe 0  -i log.txt -c copy -y -ac 1 out.wav");
+})();
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log("Running Server at " + port));
