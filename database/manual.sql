@@ -1,5 +1,5 @@
-CREATE TABLE users (
+CREATE TABLE words (
     id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL,
-    password TEXT NOT NULL
+    word TEXT NOT NULL,
+    url TEXT NOT NULL
 );
